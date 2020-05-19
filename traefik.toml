@@ -40,7 +40,7 @@ level = "DEBUG"
         #         certResolver = "letsencrypt"
         #     service = ["whoami"]
         [http.routers.web-router]
-            rule = "(Host(`hexstrat.fun`)"
+            # rule = "(Host(`hexstrat.fun`)"
             entryPoints = [
             "web"
             ]
