@@ -16,6 +16,7 @@ level = "DEBUG"
   [certificatesResolvers.letsencrypt]
 
     [certificatesResolvers.letsencrypt.acme]
+    tlschallenge=true
     email = "vladzhukovtirko@gmail.com"
     storage = "/etc/traefik/acme/acme.json"
     caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
@@ -32,6 +33,20 @@ level = "DEBUG"
             [http.middlewares.sslheader.customrequestheaders]
                 X-Forwarded-Proto = "https"
     [http.routers]
+        [http.routers.whoami]
+            rule = "Host(`hexstrat.fun`)"
+            entryPoints = ["web-secure"]
+                [http.routers.web-secure-router.tls]
+                certResolver = "letsencrypt"
+            service = ["whoami"]
+        [http.routers.web-router]
+            rule = "(Host(`hexstrat.fun`)"
+            entryPoints = [
+            "web"
+            ]
+            middlewares = [
+            "redirect"
+            ]
         [http.routers.api]
             rule = "(Host(`hexstrat.fun`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
             entryPoints = [
@@ -45,7 +60,7 @@ level = "DEBUG"
                 certResolver = "letsencrypt"
 
         [http.routers.game-router]
-        rule = "Host(`hexstrat.fun`)"
+        rule = "Host(`hexstrat.fun/ws`)"
         entryPoints = [
             "game"
         ]
@@ -57,3 +72,7 @@ level = "DEBUG"
             [http.services.game.loadBalancer]
                 [[http.services.game.loadBalancer.servers]]
                 url = "http://game:9002"
+        [http.services.whoami]
+            [http.services.whoami.loadBalancer]
+                [[http.services.game.loadBalancer.servers]]
+                url = "http://whoami:443"

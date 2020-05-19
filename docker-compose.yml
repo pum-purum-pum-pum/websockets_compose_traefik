@@ -2,9 +2,6 @@ version: "3"
 volumes:
   production_traefik: {}
 
-networks:
-    traefik:
-
 services:
   traefik:
     build:
@@ -13,10 +10,10 @@ services:
     image: main_traefik
     container_name: "traefik"
     ports:
-        - "80:80"
-        - "8080:8080"
-        - "443:443"
-        - "9002:9002" # microservice
+        - "0.0.0.0:80:80"
+        - "0.0.0.0:8080:8080"
+        - "0.0.0.0:443:443"
+        - "0.0.0.0:9002:9002" # microservice
     volumes:
         - production_traefik:/etc/traefik/acme
         - "./traefik.toml:/etc/traefik/traefik.toml"
@@ -26,7 +23,6 @@ services:
     build: .
     expose:
         - 9002
-#   hello:
-#     image: strm/helloworld-http
-#     expose:
-#         - 80
+  whoami:
+    image: containous/whoami
+    container_name: "whoami"
