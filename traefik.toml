@@ -31,7 +31,7 @@ level = "INFO"
                 X-Forwarded-Proto = "https"
     [http.routers]
         [http.routers.game-router]
-        rule = "Host(`hex_strat.io`)"
+        rule = "Host(`hexstrat.fun`)"
         entryPoints = [
             "game"
         ]
@@ -42,4 +42,4 @@ level = "INFO"
         [http.services.game]
             [http.services.game.loadBalancer]
                 [[http.services.game.loadBalancer.servers]]
-                url = "http://hex_strat.io:9002"
+                url = "http://game:9002"

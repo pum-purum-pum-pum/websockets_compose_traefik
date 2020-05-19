@@ -1,20 +1,31 @@
 version: "3"
+volumes:
+  production_traefik: {}
+
 networks:
-  traefik:
+    traefik:
 
 services:
   traefik:
-    image: "traefik:v2.2"
+    build:
+        context: .
+        dockerfile: ./traefik/Dockerfile
+    image: main_traefik
     container_name: "traefik"
     ports:
-      - "80:80"
-      - "443:443"
-      - "9002:9002" # microservice
+        - "80:80"
+        - "443:443"
+        - "9002:9002" # microservice
     volumes:
-      - "./traefik.toml:/etc/traefik/traefik.toml"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - ${PWD}/acme.json:/etc/traefik/acme/acme.json
-  microservice:
+        - production_traefik:/etc/traefik/acme
+        - "./traefik.toml:/etc/traefik/traefik.toml"
+        - "/var/run/docker.sock:/var/run/docker.sock"
+        # - ${PWD}/acme.json:/etc/traefik/acme/acme.json
+  game:
     build: .
     expose:
-      - 9002
+        - 9002
+#   hello:
+#     image: strm/helloworld-http
+#     expose:
+#         - 80
