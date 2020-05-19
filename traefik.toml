@@ -1,5 +1,5 @@
 [log]
-level = "INFO"
+level = "DEBUG"
 
 [entryPoints]
     [entryPoints.web]
@@ -8,6 +8,8 @@ level = "INFO"
     address = ":443"
     [entryPoints.game]
     address = ":9002"
+    [entryPoints.dashboard]
+        address = ":8080"
 
 [certificatesResolvers]
 
@@ -16,7 +18,7 @@ level = "INFO"
     [certificatesResolvers.letsencrypt.acme]
     email = "vladzhukovtirko@gmail.com"
     storage = "/etc/traefik/acme/acme.json"
-    # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
 
         [certificatesResolvers.letsencrypt.acme.httpChallenge]
         entryPoint = "web"
@@ -30,6 +32,18 @@ level = "INFO"
             [http.middlewares.sslheader.customrequestheaders]
                 X-Forwarded-Proto = "https"
     [http.routers]
+        [http.routers.api]
+            rule = "(Host(`hexstrat.fun`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+            entryPoints = [
+            "dashboard"
+            ]
+            service = "api@internal"
+            middlewares = [
+            "api-auth"
+            ]
+                [http.routers.api.tls]
+                certResolver = "letsencrypt"
+
         [http.routers.game-router]
         rule = "Host(`hexstrat.fun`)"
         entryPoints = [
