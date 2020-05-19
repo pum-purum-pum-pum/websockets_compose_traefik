@@ -55,8 +55,8 @@ level = "DEBUG"
         entryPoints = ["dashboard"]
         service = "api@internal"
         # middlewares = ["api-auth"]
-            # [http.routers.api.tls]
-            # certResolver = "letsencrypt"
+            [http.routers.api.tls]
+            certResolver = "letsencrypt"
 
         [http.routers.game-router]
         rule = "(Host(`hexstrat.fun`) && PathPrefix(`/ws`))"
