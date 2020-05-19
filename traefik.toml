@@ -1,0 +1,41 @@
+[log]
+level = "INFO"
+
+[entryPoints]
+    [entryPoints.web]
+    address = ":80"
+    [entryPoints.web-secure]
+    address = ":443"
+    [entryPoints.game]
+    address = ":9200"
+
+[certificatesResolvers]
+
+  [certificatesResolvers.letsencrypt]
+
+    [certificatesResolvers.letsencrypt.acme]
+    email = "vladzhukovtirko@gmail.com"
+    storage = "/etc/traefik/acme/acme.json"
+    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+
+        [certificatesResolvers.letsencrypt.acme.httpChallenge]
+        entryPoint = "web"
+[http]
+    [http.middlewares]
+        [http.middlewares.sslheader]
+            [http.middlewares.sslheader.customrequestheaders]
+                X-Forwarded-Proto = "https"
+    [http.routers]
+        [http.routers.game-router]
+        rule = "Host(`hex_strat.io`)"
+        entryPoints = [
+            "game"
+        ]
+        service = "game"
+            [http.routers.game-router.tls]
+            certResolver = "letsencrypt"
+    [http.services]
+        [http.services.game]
+            [http.services.game.loadBalancer]
+                [[http.services.game.loadBalancer.servers]]
+                url = "http://hex_strat.io:9020"
