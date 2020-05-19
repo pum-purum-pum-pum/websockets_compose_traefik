@@ -7,7 +7,7 @@ level = "INFO"
     [entryPoints.web-secure]
     address = ":443"
     [entryPoints.game]
-    address = ":9200"
+    address = ":9002"
 
 [certificatesResolvers]
 
@@ -16,12 +16,16 @@ level = "INFO"
     [certificatesResolvers.letsencrypt.acme]
     email = "vladzhukovtirko@gmail.com"
     storage = "/etc/traefik/acme/acme.json"
-    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
 
         [certificatesResolvers.letsencrypt.acme.httpChallenge]
         entryPoint = "web"
 [http]
     [http.middlewares]
+        [http.middlewares.redirect]
+            [http.middlewares.redirect.redirectScheme]
+            scheme = "https"
+            permanent = true
         [http.middlewares.sslheader]
             [http.middlewares.sslheader.customrequestheaders]
                 X-Forwarded-Proto = "https"
