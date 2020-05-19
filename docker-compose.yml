@@ -4,10 +4,10 @@ volumes:
 
 services:
   traefik:
-    build:
-        context: .
-        dockerfile: ./traefik/Dockerfile
-    image: main_traefik
+    # build:
+    #     context: .
+        # dockerfile: ./traefik/Dockerfile
+    image: traefik:v2.0
     container_name: "traefik"
     ports:
         - "0.0.0.0:80:80"
@@ -18,7 +18,7 @@ services:
         - production_traefik:/etc/traefik/acme
         - "./traefik.toml:/etc/traefik/traefik.toml"
         - "/var/run/docker.sock:/var/run/docker.sock"
-        # - ${PWD}/acme.json:/etc/traefik/acme/acme.json
+        - "./letsencrypt:/letsencrypt"
 #   game:
 #     build: .
 #     expose:
