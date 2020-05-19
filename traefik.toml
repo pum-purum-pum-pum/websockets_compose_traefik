@@ -19,7 +19,7 @@ level = "DEBUG"
     tlschallenge=true
     email = "vladzhukovtirko@gmail.com"
     storage = "/etc/traefik/acme/acme.json"
-    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
 
         [certificatesResolvers.letsencrypt.acme.httpChallenge]
         entryPoint = "web"
@@ -44,9 +44,10 @@ level = "DEBUG"
             entryPoints = [
             "web"
             ]
-            middlewares = [
-            "redirect"
-            ]
+            # middlewares = [
+            # "redirect"
+            # ]
+            service = ["whoami"]
         [http.routers.api]
             rule = "(Host(`hexstrat.fun`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
             entryPoints = [
@@ -75,4 +76,4 @@ level = "DEBUG"
         [http.services.whoami]
             [http.services.whoami.loadBalancer]
                 [[http.services.game.loadBalancer.servers]]
-                url = "http://whoami:443"
+                url = "http://whoami:80"
