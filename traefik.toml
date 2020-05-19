@@ -38,4 +38,4 @@ level = "INFO"
         [http.services.game]
             [http.services.game.loadBalancer]
                 [[http.services.game.loadBalancer.servers]]
-                url = "http://hex_strat.io:9020"
+                url = "http://hex_strat.io:9002"

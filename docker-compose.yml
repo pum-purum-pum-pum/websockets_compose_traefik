@@ -4,15 +4,14 @@ services:
     image: "traefik:v2.2"
     container_name: "traefik"
     ports:
-      - "9002:9002"
+      - "80:80"
       - "443:443"
+      - "9002:9002"
     volumes:
       - "./traefik.toml:/etc/traefik/traefik.toml"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - ${PWD}/acme.json:/etc/traefik/acme/acme.json
   microservice:
     build: .
-    ports:
-      - "9002:9002"
     expose:
       - 9002
