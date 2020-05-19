@@ -11,34 +11,34 @@ level = "DEBUG"
     [entryPoints.dashboard]
         address = ":8080"
 
-[certificatesResolvers]
+# [certificatesResolvers]
 
-  [certificatesResolvers.letsencrypt]
+#   [certificatesResolvers.letsencrypt]
 
-    [certificatesResolvers.letsencrypt.acme]
-    tlschallenge=true
-    email = "vladzhukovtirko@gmail.com"
-    storage = "/etc/traefik/acme/acme.json"
-    # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+#     [certificatesResolvers.letsencrypt.acme]
+#     tlschallenge=true
+#     email = "vladzhukovtirko@gmail.com"
+#     storage = "/etc/traefik/acme/acme.json"
+#     # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
 
-        [certificatesResolvers.letsencrypt.acme.httpChallenge]
-        entryPoint = "web"
+#         [certificatesResolvers.letsencrypt.acme.httpChallenge]
+#         entryPoint = "web"
 [http]
-    [http.middlewares]
-        [http.middlewares.redirect]
-            [http.middlewares.redirect.redirectScheme]
-            scheme = "https"
-            permanent = true
-        [http.middlewares.sslheader]
-            [http.middlewares.sslheader.customrequestheaders]
-                X-Forwarded-Proto = "https"
+    # [http.middlewares]
+    #     [http.middlewares.redirect]
+    #         [http.middlewares.redirect.redirectScheme]
+    #         scheme = "https"
+    #         permanent = true
+    #     [http.middlewares.sslheader]
+    #         [http.middlewares.sslheader.customrequestheaders]
+    #             X-Forwarded-Proto = "https"
     [http.routers]
-        [http.routers.whoami]
-            rule = "Host(`hexstrat.fun`)"
-            entryPoints = ["web-secure"]
-                [http.routers.web-secure-router.tls]
-                certResolver = "letsencrypt"
-            service = ["whoami"]
+        # [http.routers.whoami]
+        #     rule = "Host(`hexstrat.fun`)"
+        #     entryPoints = ["web-secure"]
+        #         [http.routers.web-secure-router.tls]
+        #         certResolver = "letsencrypt"
+        #     service = ["whoami"]
         [http.routers.web-router]
             rule = "(Host(`hexstrat.fun`)"
             entryPoints = [
@@ -48,31 +48,31 @@ level = "DEBUG"
             # "redirect"
             # ]
             service = ["whoami"]
-        [http.routers.api]
-            rule = "(Host(`hexstrat.fun`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
-            entryPoints = [
-            "dashboard"
-            ]
-            service = "api@internal"
-            middlewares = [
-            "api-auth"
-            ]
-                [http.routers.api.tls]
-                certResolver = "letsencrypt"
+        # [http.routers.api]
+        #     rule = "(Host(`hexstrat.fun`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+        #     entryPoints = [
+        #     "dashboard"
+        #     ]
+        #     service = "api@internal"
+        #     middlewares = [
+        #     "api-auth"
+        #     ]
+        #         [http.routers.api.tls]
+        #         certResolver = "letsencrypt"
 
-        [http.routers.game-router]
-        rule = "Host(`hexstrat.fun/ws`)"
-        entryPoints = [
-            "game"
-        ]
-        service = "game"
-            [http.routers.game-router.tls]
-            certResolver = "letsencrypt"
+        # [http.routers.game-router]
+        # rule = "Host(`hexstrat.fun` && (PathPrefix(`/ws`)))"
+        # entryPoints = [
+        #     "game"
+        # ]
+        # service = "game"
+        #     [http.routers.game-router.tls]
+        #     certResolver = "letsencrypt"
     [http.services]
-        [http.services.game]
-            [http.services.game.loadBalancer]
-                [[http.services.game.loadBalancer.servers]]
-                url = "http://game:9002"
+        # [http.services.game]
+        #     [http.services.game.loadBalancer]
+        #         [[http.services.game.loadBalancer.servers]]
+        #         url = "http://game:9002"
         [http.services.whoami]
             [http.services.whoami.loadBalancer]
                 [[http.services.game.loadBalancer.servers]]
